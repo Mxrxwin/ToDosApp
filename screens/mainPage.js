@@ -114,8 +114,8 @@ export const MainPage = () => {
       fontSize: 20, // Размер шрифта 20
       fontWeight: "bold", // Жирный шрифт
       color: "white",
-
-      padding: 10,
+      marginLeft: -4,
+      padding: 7,
     },  
     
     deleteButton: {
