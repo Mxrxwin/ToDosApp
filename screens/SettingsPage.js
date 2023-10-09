@@ -3,22 +3,28 @@ import { StyleSheet, View, Text, Switch } from "react-native";
 import { EventRegister } from 'react-native-event-listeners'
 import theme from "../theme/theme";
 import themeContext from "../theme/themeContext";
+import Icon from "react-native-ionicons";
 
 export default function SettingsPage({ navigation }) {
   const [darkMode, setDarkMode] = useState(false);
   const theme = useContext(themeContext);
 
+
+  const SwitchTheme = () => {
+    setDarkMode(!darkMode);
+    EventRegister.emit('ChangeTheme', !darkMode)
+  }
+
   return (
     <View style={[styles.page, {backgroundColor: theme.backgroundColor}]}>
-      <Text style={[styles.text, {color: theme.textColor}]}>SettingsPage</Text>
-      <Switch 
-        value={darkMode}
-        onValueChange={() => {{
-          setDarkMode(!darkMode)};
-          EventRegister.emit('ChangeTheme', !darkMode)
-        }}
-
-      />
+      <View style={{alignItems:'flex-end'}}>
+        <Icon 
+          name={darkMode ? 'sunny' : 'moon'} 
+          size={40} 
+          color="#aaa"
+          style={{marginTop: 35, marginEnd: 12}} 
+          onPress={() => SwitchTheme()} />
+      </View>
     </View>
   );
 }
@@ -26,8 +32,6 @@ export default function SettingsPage({ navigation }) {
 const styles = StyleSheet.create({
   page: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
   },
   text: {
     fontSize: 24,
