@@ -1,10 +1,24 @@
-import react from "react";
-import { StyleSheet, View, Text } from "react-native";
+import react, {useContext, useState} from "react";
+import { StyleSheet, View, Text, Switch } from "react-native";
+import { EventRegister } from 'react-native-event-listeners'
+import theme from "../theme/theme";
+import themeContext from "../theme/themeContext";
 
 export default function SettingsPage({ navigation }) {
+  const [darkMode, setDarkMode] = useState(false);
+  const theme = useContext(themeContext);
+
   return (
-    <View style={styles.page}>
-      <Text style={styles.text}>SettingsPage</Text>
+    <View style={[styles.page, {backgroundColor: theme.backgroundColor}]}>
+      <Text style={[styles.text, {color: theme.textColor}]}>SettingsPage</Text>
+      <Switch 
+        value={darkMode}
+        onValueChange={() => {{
+          setDarkMode(!darkMode)};
+          EventRegister.emit('ChangeTheme', !darkMode)
+        }}
+
+      />
     </View>
   );
 }
@@ -14,7 +28,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#15222C",
   },
   text: {
     fontSize: 24,

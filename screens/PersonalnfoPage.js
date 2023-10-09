@@ -1,4 +1,4 @@
-import react, { useState } from "react";
+import react, { useContext, useState } from "react";
 import {
     StyleSheet, 
     View, 
@@ -12,6 +12,8 @@ import { FIREBASE_AUTH } from "../firebase.config";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { Input } from "react-native-elements";
 import Icon from "react-native-ionicons";
+import theme from "../theme/theme";
+import themeContext from "../theme/themeContext";
 
 export default function PersonalInfoPage({navigation}) {
     const [email, setEmail] = useState('');
@@ -19,7 +21,9 @@ export default function PersonalInfoPage({navigation}) {
     const [loading, setLoading] = useState(false);
     const auth = FIREBASE_AUTH;
     const [hidePass, setHidePass] = useState(false);
-
+    const [darkMode, setDarkMode] = useState(false);
+    const theme = useContext(themeContext);
+    
     
 
     const signIn = async () => {
@@ -52,7 +56,7 @@ export default function PersonalInfoPage({navigation}) {
 
 
     return (
-        <View style={styles.page}>
+        <View style={[styles.page, {backgroundColor: theme.backgroundColor}]}>
             <KeyboardAvoidingView behavior="padding">
                 <TextInput 
                     style={styles.input} 
@@ -81,10 +85,10 @@ export default function PersonalInfoPage({navigation}) {
                 {loading ? <ActivityIndicator size="large" color="#0000ff" /> 
                 : <View style={{marginTop:30}}>
                     <TouchableOpacity style={[styles.button, {backgroundColor: "#2196F3"}]} onPress={signIn}>
-                        <Text style={styles.buttonText}>Login</Text>
+                        <Text style={[styles.buttonText, {color: 'white'}]}>Login</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.button} title="Register" onPress={signUp}>
-                        <Text style={styles.buttonText}>Register</Text>
+                        <Text style={[styles.buttonText,  {color: theme.textColor,}]}>Register</Text>
                     </TouchableOpacity>
                 </View>}
             </KeyboardAvoidingView>
@@ -95,8 +99,7 @@ export default function PersonalInfoPage({navigation}) {
 const styles = StyleSheet.create({
     page: {
         flex:1, 
-        justifyContent: 'center',
-        backgroundColor: "#15222C",
+        justifyContent: 'center'
     },
     input: {
         marginVertical: 4,
@@ -121,7 +124,6 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         fontSize: 20,
-        color: '#fff',
         fontWeight: '600'
     },
 });

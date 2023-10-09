@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
     StyleSheet,
     Text,
@@ -9,12 +9,15 @@ import {
   } from "react-native";
 import { useState } from "react";
 import Icon from "react-native-ionicons";
+import themeContext from "../theme/themeContext";
 
 export const MainPage = () => {
     const [count, setCount] = useState([]);
     const [inputText, setInputText] = useState("");
-    
-  
+    const [darkMode, setDarkMode] = useState(false);
+    const theme = useContext(themeContext);
+
+
     const UpdateCount = () => {
       if (inputText.length != 0) {
         const newItem = {
@@ -32,8 +35,8 @@ export const MainPage = () => {
     }
     
     const renderItem = ({ item }) => (
-      <View style={{ flexDirection: 'row', borderBottomColor: "#1C7FCE", borderBottomWidth: 1, marginLeft:10, marginBottom:5 }}>
-        <Text key={item.id} style={styles.text}>
+      <View style={styles.itemBox}>
+        <Text key={item.id} style={[styles.text, {color: theme.textColor}]}>
           {item.text}
         </Text>
         <TouchableOpacity onPress={() => DeleteCount(item.id)} style={styles.deleteButton}>
@@ -43,10 +46,10 @@ export const MainPage = () => {
     );  
   
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, {backgroundColor: theme.backgroundColor}]}>
         <View style={styles.header}>
           <TextInput
-            style={styles.input}
+            style={[styles.input, {color: theme.textColor}]}
             placeholder="Введите текст"
             placeholderTextColor="grey"
             value={inputText}
@@ -68,10 +71,9 @@ export const MainPage = () => {
   
   const styles = StyleSheet.create({
     container: {
-      flex: 1, // Занимает всю доступную ширину и высоту
-      justifyContent: "flex-start", // Выравнивание по центру по вертикали
-      alignItems: "center", // Выравнивание по центру по горизонтали
-      backgroundColor: "#15222C",
+      flex: 1,
+      justifyContent: "flex-start", 
+      alignItems: "center", 
     },
     header: {
       flexDirection: "row",
@@ -85,7 +87,6 @@ export const MainPage = () => {
       marginLeft: 20,
       margin: 30,
       paddingHorizontal: 8,
-      color: "white",
       fontSize: 20,
     },
     button: {
@@ -115,10 +116,17 @@ export const MainPage = () => {
     },  
     
     deleteButton: {
-      borderRadius: 15,
       width: 40,
-      height: 40,
-      justifyContent: 'center', // Центрируем содержимое по вертикали
-      alignItems: 'center', // Центрируем содержимое по горизонтали
-    },
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+      marginBottom: 10,
+    }, 
+    itemBox: {
+      flexDirection: 'row', 
+      borderBottomColor: "#1C7FCE", 
+      borderBottomWidth: 1,
+      marginLeft:10, 
+      marginRight:5, 
+      marginBottom:5
+    }
 })
