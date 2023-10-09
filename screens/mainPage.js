@@ -21,7 +21,7 @@ export const MainPage = () => {
     const UpdateCount = () => {
       if (inputText.length != 0) {
         const newItem = {
-          id: Date.now().toString(),
+          id: Date.now(),
           text: inputText,
         };
         setCount((prev) => [...prev, newItem]);
@@ -36,9 +36,12 @@ export const MainPage = () => {
     
     const renderItem = ({ item }) => (
       <View style={styles.itemBox}>
-        <Text key={item.id} style={[styles.text, {color: theme.textColor}]}>
-          {item.text}
-        </Text>
+        <View style={{ width: "89%"}}>
+          <Text key={item.id} style={[styles.text, {color: theme.textColor}]}>
+            {item.text}
+          </Text>
+          <Text style={{color: 'grey', fontWeight: '300', fontSize: 15}}> {new Date(item.id).toString().substr(4, 20)} </Text>
+        </View>
         <TouchableOpacity onPress={() => DeleteCount(item.id)} style={styles.deleteButton}>
           <Icon name="close" color={'#8B8E8F'} size={25} style={{marginTop:15}}/>
         </TouchableOpacity>
@@ -111,7 +114,7 @@ export const MainPage = () => {
       fontSize: 20, // Размер шрифта 20
       fontWeight: "bold", // Жирный шрифт
       color: "white",
-      width: "89%",
+
       padding: 10,
     },  
     
