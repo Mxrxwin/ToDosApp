@@ -1,25 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { MainPage } from "./screens/mainPage";
 import MainContainer from "./navigation/MainConteiner";
 
-import theme from "./theme/theme";
-import themeContext from "./theme/themeContext";
+import theme from "./src/theme";
+import themeContext from "./src/themeContext";
 import { EventRegister } from "react-native-event-listeners";
 
 export default function App() {
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
 
   useEffect(() => {
-    const listener = EventRegister.addEventListener('ChangeTheme', (data) => {
-      setDarkMode(data)
-    })
+    const listenerTheme = EventRegister.addEventListener(
+      "ChangeTheme",
+      (data) => {
+        setDarkMode(data);
+      }
+    );
     return () => {
-      EventRegister.removeAllListeners(listener)
-    }
-  }, [darkMode])
+      EventRegister.removeEventListener(listenerTheme);
+    };
+  }, [darkMode]);
 
   return (
-    <themeContext.Provider value={darkMode === true ? theme.dark : theme.light}>   
+    <themeContext.Provider value={darkMode === true ? theme.dark : theme.light}>
       <MainContainer />
     </themeContext.Provider>
   );

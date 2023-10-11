@@ -20,7 +20,7 @@ const loadFonts = async () => {
   });
 }
 
-export default function MainContainer({ navigation }) {
+export default function MainContainer() {
   const [fontLoaded, setFontLoaded] = useState(false);
 
   useEffect(() => {

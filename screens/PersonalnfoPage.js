@@ -1,27 +1,23 @@
-import react, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import {
     StyleSheet, 
     View, 
     TextInput, 
     ActivityIndicator, 
     KeyboardAvoidingView, 
-    Pressable, 
     Text, 
     TouchableOpacity} from 'react-native';
 import { FIREBASE_AUTH } from "../firebase.config";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { Input } from "react-native-elements";
 import Icon from "react-native-ionicons";
-import theme from "../theme/theme";
-import themeContext from "../theme/themeContext";
+import themeContext from "../src/themeContext";
 
-export default function PersonalInfoPage({navigation}) {
+export default function PersonalInfoPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const auth = FIREBASE_AUTH;
     const [hidePass, setHidePass] = useState(false);
-    const [darkMode, setDarkMode] = useState(false);
     const theme = useContext(themeContext);
     
     
