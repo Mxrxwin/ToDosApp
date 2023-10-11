@@ -42,26 +42,25 @@ export default function MainContainer() {
         initialRouteName={mainName}
         screenOptions={({}) => ({
             headerShown: false,
-            tabBarStyle: {backgroundColor: '#475E70'},
+            tabBarStyle: {backgroundColor: '#475E70', height: 60},
             tabBarInactiveTintColor: '#B5B9BB',
             tabBarShowLabel: false,
-            
         })}>
 
         
         <Tab.Screen name={mainName} component={MainPage} options={{
             tabBarIcon: ({color, size}) => (
-                <Icon name="home" color={color} size={size} />
+                <Icon name="home" color={color} size={32} />
             )
         }} />
         <Tab.Screen name={PersonalInfoName} component={PersonalInfoPage} options={{
             tabBarIcon: ({color, size}) => (
-                <Icon name="person" color={color} size={size} />
+                <Icon name="person" color={color} size={32} />
             )
         }} />
         <Tab.Screen name={settingsName} component={SettingsPage} options={{
             tabBarIcon: ({color, size}) => (
-                <Icon name="settings" color={color} size={size} />
+                <Icon name="settings" color={color} size={32} />
             )
         }} />
       </Tab.Navigator>
