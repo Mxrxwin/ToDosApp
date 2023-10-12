@@ -18,6 +18,7 @@ export const MainPage = () => {
   const [inputText, setInputText] = useState("");
   const theme = useContext(themeContext);
   const [dateFormat, setDateFormat] = useState('dd/MM/yy');
+  const [sortFormat, setSortFormat] = useState("2");
 
   useEffect(() => {
     const listenerDateFormat = EventRegister.addEventListener(
@@ -31,17 +32,57 @@ export const MainPage = () => {
     };
   }, [dateFormat]);
 
+  useEffect(() => {
+    const listenerSortFormat = EventRegister.addEventListener(
+      "ChangeSortFormat",
+      (data) => {
+        setSortFormat(data);
+      }
+    );
+    return () => {
+      EventRegister.removeEventListener(listenerSortFormat);
+    };
+  }, [sortFormat]);
+
+  useEffect(() => {
+    SortCounts(sortFormat);
+  }, [count, sortFormat]);
+
+
   const UpdateCount = () => {
-    if (inputText.length != 0) {
-      const newItem = {
-        id: new Date(),
-        text: inputText,
-      };
-      setCount((prev) => [...prev, newItem]);
+    if (inputText.length !== 0) {
+      setCount((prev) => [
+        ...prev,
+        {
+          id: prev.length > 0 ? Math.max(...prev.map(item => item.id)) + 1 : 1,
+          date: new Date(),
+          text: inputText,
+        },
+      ]);
       setInputText("");
     }
   };
 
+  
+  const SortCounts = (sortFormat) => {
+    switch (sortFormat) {
+      case "1":
+        count.sort((a, b) => a.id - b.id);
+        break;
+      case "2":
+        count.sort((a, b) => b.id - a.id);
+        break;
+      case "3":
+        count.sort((a, b) => a.text.localeCompare(b.text));
+        break;
+      case "4":
+        count.sort((a, b) => b.text.localeCompare(a.text));
+        break;
+      default:
+        break;
+    }
+  };
+  
   const DeleteCount = (id) => {
     const updatedCount = count.filter((item) => item.id !== id);
     setCount(updatedCount);
@@ -54,7 +95,7 @@ export const MainPage = () => {
           {item.text}
         </Text>
         <Text style={{ color: "grey", fontWeight: "300", fontSize: 15 }}>
-          {format(new Date(item.id), dateFormat)}
+          {format(new Date(item.date), dateFormat)}
         </Text>
       </View>
       <TouchableOpacity

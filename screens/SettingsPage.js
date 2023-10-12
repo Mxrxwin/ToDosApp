@@ -1,17 +1,17 @@
 import React, { useContext, useState } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { EventRegister } from "react-native-event-listeners";
 import themeContext from "../src/themeContext";
 import Icon from "react-native-ionicons";
-import { Dropdown } from "react-native-element-dropdown";
+import DropdownComponent from "../src/settingsBlock";
 
 export default function SettingsPage() {
   const [darkMode, setDarkMode] = useState(true);
   const theme = useContext(themeContext);
-
   const [dateFormat, setDateFormat] = useState("dd/MM/yy");
+  const [sortFormat, setSortFormat] = useState("1");
 
-  const data = [
+  const dataDateFormat = [
     { label: "01/10/23", value: "dd/MM/yy" },
     { label: "01/10/23 12:34", value: "dd/MM/yy HH:mm" },
     { label: "October 01, 2023", value: "MMMM dd, yyyy" },
@@ -19,6 +19,13 @@ export default function SettingsPage() {
     { label: "October 1st, 2023 12:34", value: "MMMM do, yyyy HH:mm" },
   ];
 
+  const dataSortFormat = [
+    { label: "Сначала старые", value: "1" },
+    { label: "Сначала новые", value: "2" },
+    { label: "По алфавиту", value: "3" },
+    { label: "Против алфавита", value: "4" },
+  ];
+  
   const SwitchTheme = () => {
     setDarkMode(!darkMode);
     EventRegister.emit("ChangeTheme", !darkMode);
@@ -27,6 +34,11 @@ export default function SettingsPage() {
   const SwitchDateFormat = (param) => {
     setDateFormat(param);
     EventRegister.emit("ChangeDateFormat", param);
+  };
+
+  const SwitchSortFormat = (param) => {
+    setSortFormat(param);
+    EventRegister.emit("ChangeSortFormat", param);
   };
 
   return (
@@ -40,39 +52,20 @@ export default function SettingsPage() {
           onPress={() => SwitchTheme()}
         />
       </View>
-      <View style={styles.dropdown}>
-        <Icon
-          style={{ width: "10%", padding: 5 }}
-          as
-          name={"calendar"}
-          size={30}
-          color="#aaa"
-        />
-        <Text
-          style={{
-            width: "35%",
-            color: theme.textColor,
-            fontSize: 17,
-            fontWeight: "500",
-            padding: 5
-          }}
-        >
-          Формат даты
-        </Text>
-        <Dropdown
-          style={{ width: "55%" }}
-          placeholderStyle={{ color: theme.textColor, textAlign: 'right' }}
-          iconStyle={styles.iconStyle}
-          data={data}
-          maxHeight={200}
-          labelField="label"
-          valueField="value"
-          placeholder={data.find((item) => item.value === dateFormat).label}
-          onChange={(item) => {
-            SwitchDateFormat(item.value);
-          }}
-        />
-      </View>
+      <DropdownComponent
+        iconName="calendar"
+        title="Формат даты"
+        changesVar={dateFormat}
+        data={dataDateFormat}
+        onValueChange={(value) => SwitchDateFormat(value)}
+      />
+      <DropdownComponent
+        iconName="funnel"
+        title="Сортировка"
+        changesVar={sortFormat}
+        data={dataSortFormat}
+        onValueChange={(value) => (value !== sortFormat) ? SwitchSortFormat(value) : value}
+      />
     </View>
   );
 }
@@ -80,19 +73,5 @@ export default function SettingsPage() {
 const styles = StyleSheet.create({
   page: {
     flex: 1,
-  },
-  iconStyle: {
-    width: 30,
-    height: 30,
-  },
-  dropdown: {
-    borderWidth: 2,
-    borderColor: "#2196F3",
-    borderRadius: 10,
-    padding: 8,
-    marginTop: 10,
-    marginHorizontal: 10,
-    flexDirection: "row",
-    alignItems: "center",
   },
 });
